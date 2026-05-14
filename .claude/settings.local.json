@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet restore *)",
+      "PowerShell(dotnet nuget locals global-packages --list)",
+      "Bash(dir /s /b)",
+      "PowerShell(head -100)"
+    ]
+  }
+}
