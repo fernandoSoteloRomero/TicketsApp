@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: ticketsapp-db
+    user: root
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: "YourComplexPassword123!"
+      MSSQL_PID: Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql/data
+      - sqlserver_log:/var/opt/mssql/log
+      - sqlserver_backup:/var/opt/mssql/backup
+    networks:
+      - ticketsapp-network
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourComplexPassword123!", "-Q", "SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  sqlserver_data:
+    driver: local
+  sqlserver_log:
+    driver: local
+  sqlserver_backup:
+    driver: local
+
+networks:
+  ticketsapp-network:
+    driver: bridge
