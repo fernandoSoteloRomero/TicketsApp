@@ -1,0 +1,98 @@
+# =========================
+# Build
+# =========================
+bin/
+obj/
+out/
+publish/
+
+# =========================
+# User-specific files
+# =========================
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# =========================
+# Visual Studio / VS Code
+# =========================
+.vs/
+.vscode/
+.idea/
+
+# =========================
+# Rider
+# =========================
+_ReSharper*/
+*.DotSettings.user
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+
+# =========================
+# NuGet
+# =========================
+*.nupkg
+packages/
+.nuget/
+
+# =========================
+# ASP.NET Core
+# =========================
+appsettings.Development.json
+
+# Si tienes secretos locales
+secrets.json
+
+# =========================
+# Node.js (si usas frontend)
+# =========================
+node_modules/
+dist/
+build/
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Database files
+# =========================
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+# =========================
+# Test Results
+# =========================
+TestResults/
+coverage/
+
+# =========================
+# Docker
+# =========================
+docker-compose.override.yml
+
+# =========================
+# Azure
+# =========================
+.publishsettings
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
