@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketsApp.Application.DTOs.Auth;
@@ -118,6 +119,42 @@ public class AuthService : IAuthService
       AccessToken = newAccessToken,
       RefreshToken = newRefreshToken, //! ← NUEVO token, no el anterior
       ExpiresIn = 15 * 60
+    };
+  }
+
+  public async Task<RegisterResponseDto> RegisterAsync(RegisterDto request)
+  {
+    //! Crear usuario
+    var user = new User
+    {
+      UserName = request.Email,
+      Email = request.Email,
+      DepartmentId = request.DepartmentId,
+      FirstName = request.FirstName,
+      LastName = request.LastName,
+      IsActive = true
+    };
+
+    var result = await _userManager.CreateAsync(user, request.Password);
+    if (!result.Succeeded)
+    {
+      var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+      throw new InvalidOperationException($"No se pudo crear el usuario: {errors}");
+    }
+
+    //! Asignar rol (opcional, si viene nulo, por defecto "Empleado")
+    var roleToAssign = request.Role ?? "Empleado";
+
+    //! Buscar rol en BD
+    var roleInDb = await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleToAssign) ??
+                   throw new InvalidOperationException($"El rol '{roleToAssign}' no existe");
+
+    //! Asignar rol al usuario
+    await _userManager.AddToRoleAsync(user, roleInDb.Name);
+
+    return new RegisterResponseDto
+    {
+      UserId = user.Id
     };
   }
 }

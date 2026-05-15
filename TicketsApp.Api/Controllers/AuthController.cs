@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TicketsApp.Application.DTOs.Auth;
 using TicketsApp.Application.Interfaces;
 using TicketsApp.Domain.Entities;
+using TicketsApp.Domain.Enums;
 
 namespace TicketsApp.Api.Controllers
 {
@@ -33,35 +34,21 @@ namespace TicketsApp.Api.Controllers
         {
             try
             {
-                // Validar
+                //! Validar
                 var validationResult = await _registerValidator.ValidateAsync(request);
                 if (!validationResult.IsValid)
                     return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
 
-                // Verificar si el usuario ya existe
+                //! Verificar si el usuario ya existe
                 var existingUser = await _userManager.FindByEmailAsync(request.Email);
                 if (existingUser != null)
                     return BadRequest("El email ya está registrado");
 
-                // Crear usuario
-                var user = new User
-                {
-                    UserName = request.Email,
-                    Email = request.Email,
-                    DepartmentId = request.DepartmentId,
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    IsActive = true
-                };
 
-                var result = await _userManager.CreateAsync(user, request.Password);
-                if (!result.Succeeded)
-                    return BadRequest(result.Errors.Select(e => e.Description));
+                var response = await _authService.RegisterAsync(request);
 
-                // Asignar rol de Empleado por defecto
-                await _userManager.AddToRoleAsync(user, "Empleado");
 
-                return Ok(new { message = "Usuario registrado exitosamente", userId = user.Id });
+                return Ok(new { message = "Usuario registrado exitosamente", userId = response.UserId });
             }
             catch (Exception ex)
             {

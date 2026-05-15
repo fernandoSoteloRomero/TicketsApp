@@ -66,11 +66,20 @@ public class UserService : IUserService
         if (user == null)
             throw new InvalidOperationException("Usuario no encontrado");
 
+        var userRoles = await _userManager.GetRolesAsync(user);
+
         if (!string.IsNullOrEmpty(updateUserDto.FirstName))
             user.UserName = updateUserDto.FirstName;
 
         if (updateUserDto.DepartmentId.HasValue)
             user.DepartmentId = updateUserDto.DepartmentId;
+
+        if (!string.IsNullOrWhiteSpace(updateUserDto.Role) && !userRoles.Contains(updateUserDto.Role))
+        {
+            var roleInDb = await _context.Roles.FirstOrDefaultAsync(r => r.Name == updateUserDto.Role) ??
+                           throw new InvalidOperationException($"El rol: {updateUserDto.Role} no existe");
+            await _userManager.AddToRoleAsync(user, roleInDb.Name);
+        }
 
         user.UpdatedAt = DateTime.UtcNow;
 
