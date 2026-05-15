@@ -26,7 +26,7 @@ public class AuthService : IAuthService
 
   public async Task<LoginResponseDto> LoginAsync(LoginDto request)
   {
-    // Buscar usuario por email
+    //! Buscar usuario por email
     var user = await _userManager.FindByEmailAsync(request.Email);
     if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
       throw new UnauthorizedAccessException("Email o contraseña inválidos");
@@ -34,14 +34,14 @@ public class AuthService : IAuthService
     if (!user.IsActive)
       throw new UnauthorizedAccessException("Usuario inactivo");
 
-    // Obtener roles del usuario
+    //! Obtener roles del usuario
     var roles = await _userManager.GetRolesAsync(user);
 
-    // Generar tokens
+    //! Generar tokens
     var accessToken = _jwtTokenService.GenerateAccessToken(user.Id, user.Email!, roles);
     var refreshToken = _jwtTokenService.GenerateRefreshToken();
 
-    // Guardar refresh token en BD
+    //! Guardar refresh token en BD
     var refreshTokenEntity = new RefreshToken
     {
       UserId = user.Id,
@@ -67,7 +67,7 @@ public class AuthService : IAuthService
 
   public async Task LogoutAsync(int userId)
   {
-    // Marcar todos los refresh tokens del usuario como revocados
+    //! Marcar todos los refresh tokens del usuario como revocados
     var tokens = await _context.Set<RefreshToken>()
       .Where(rt => rt.UserId == userId && !rt.IsRevoked)
       .ToListAsync();
@@ -82,7 +82,7 @@ public class AuthService : IAuthService
 
   public async Task<TokenResponseDto> RefreshTokenAsync(string refreshToken)
   {
-    // Buscar el refresh token
+    //! Buscar el refresh token
     var storedToken = await _context.Set<RefreshToken>()
       .Include(rt => rt.User)
       .FirstOrDefaultAsync(rt => rt.Token == refreshToken && !rt.IsRevoked);
@@ -93,13 +93,30 @@ public class AuthService : IAuthService
     var user = storedToken.User ?? throw new UnauthorizedAccessException("Refresh token inválido o expirado");
     var roles = await _userManager.GetRolesAsync(user);
 
-    // Generar nuevo access token
+    //! 🔒 PASO 1: Revocar el token anterior
+    storedToken.IsRevoked = true;
+    _context.Set<RefreshToken>().Update(storedToken);
+
+    //! ✨ PASO 2: Generar NUEVO refresh token
+    var newRefreshToken = _jwtTokenService.GenerateRefreshToken();
+    var newRefreshTokenEntity = new RefreshToken
+    {
+      UserId = user.Id,
+      Token = newRefreshToken,
+      ExpiryDate = DateTime.UtcNow.AddDays(7),
+      IsRevoked = false,
+      CreatedAt = DateTime.UtcNow
+    };
+    _context.Set<RefreshToken>().Add(newRefreshTokenEntity);
+    await _context.SaveChangesAsync();
+
+    //! PASO 3: Generar nuevo access token
     var newAccessToken = _jwtTokenService.GenerateAccessToken(user.Id, user.Email!, roles);
 
     return new TokenResponseDto
     {
       AccessToken = newAccessToken,
-      RefreshToken = refreshToken,
+      RefreshToken = newRefreshToken, //! ← NUEVO token, no el anterior
       ExpiresIn = 15 * 60
     };
   }
