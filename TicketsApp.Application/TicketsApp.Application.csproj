@@ -2,15 +2,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TicketsApp.Domain\TicketsApp.Domain.csproj" />
+    <ProjectReference Include="..\TicketsApp.Infrastructure\TicketsApp.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageReference Include="Mapster" Version="10.0.7" />
     <PackageReference Include="Mapster.DependencyInjection" Version="10.0.7" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +25,9 @@
     <Folder Include="DTOs\History\" />
     <Folder Include="DTOs\Tickets\" />
     <Folder Include="DTOs\Users\" />
+    <Folder Include="Interfaces\" />
     <Folder Include="Mappings\" />
+    <Folder Include="Services\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 
