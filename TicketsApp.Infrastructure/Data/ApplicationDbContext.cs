@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TicketsApp.Domain.Entities;
 
@@ -18,6 +17,7 @@ namespace TicketsApp.Infrastructure.Data
         public DbSet<TicketAttachment> TicketAttachments { get; set; }
         public DbSet<TicketHistory> TicketHistories { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

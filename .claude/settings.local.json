@@ -4,7 +4,9 @@
       "Bash(dotnet restore *)",
       "PowerShell(dotnet nuget locals global-packages --list)",
       "Bash(dir /s /b)",
-      "PowerShell(head -100)"
+      "PowerShell(head -100)",
+      "Bash(ls \"C:/Users/fernando.sotelo/.nuget/packages/microsoft.openapi/\" 2>&1)",
+      "Read(//c/Users/fernando.sotelo/.nuget/packages/microsoft.openapi/**)"
     ]
   }
 }

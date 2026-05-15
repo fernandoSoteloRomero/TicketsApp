@@ -57,8 +57,8 @@ public class AuthService : IAuthService
     {
       UserId = user.Id,
       Email = user.Email!,
-      FirstName = user.UserName!,
-      LastName = user.UserName!,
+      FirstName = user.FirstName,
+      LastName = user.LastName,
       AccessToken = accessToken,
       RefreshToken = refreshToken,
       ExpiresIn = 15 * 60

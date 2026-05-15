@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketsApp.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TicketsApp.Infrastructure.Data;
 namespace TicketsApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260515162712_AddRefreshTokenDbSet")]
+    partial class AddRefreshTokenDbSet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,7 +168,7 @@ namespace TicketsApp.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "7f688a03-dc67-44dd-8014-e82d25f53aea",
+                            ConcurrencyStamp = "5be09ef6-6eae-4ec8-9ee8-b2ace72a3699",
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Usuario regular que crea tickets",
                             Name = "Empleado",
@@ -174,7 +177,7 @@ namespace TicketsApp.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "e72e48e1-9e65-46b1-af2f-cc8e3aa7d3d4",
+                            ConcurrencyStamp = "7d5c68aa-1255-416e-962b-4f30304338a7",
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Trabaja en tickets de su departamento",
                             Name = "Agente",
@@ -183,7 +186,7 @@ namespace TicketsApp.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "27470982-5fd7-4ce7-afcf-f372f887114a",
+                            ConcurrencyStamp = "8f797b9c-d42e-458c-bb34-89b340fec0a6",
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Gerente de departamento",
                             Name = "GerenteDpto",
@@ -192,7 +195,7 @@ namespace TicketsApp.Infrastructure.Migrations
                         new
                         {
                             Id = 4,
-                            ConcurrencyStamp = "a7fe4bf8-3e97-4a6c-89eb-c7c50fdeaf42",
+                            ConcurrencyStamp = "98f10fb3-009e-4567-bc61-3bc64b975b42",
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Administrador del sistema",
                             Name = "Admin",
@@ -298,7 +301,7 @@ namespace TicketsApp.Infrastructure.Migrations
                             Description = "Departamento de Tecnología",
                             IsActive = true,
                             Name = "IT",
-                            UpdatedAt = new DateTime(2026, 5, 15, 16, 38, 53, 426, DateTimeKind.Utc).AddTicks(7959)
+                            UpdatedAt = new DateTime(2026, 5, 15, 16, 27, 11, 170, DateTimeKind.Utc).AddTicks(4859)
                         },
                         new
                         {
@@ -307,7 +310,7 @@ namespace TicketsApp.Infrastructure.Migrations
                             Description = "Recursos Humanos",
                             IsActive = true,
                             Name = "RH",
-                            UpdatedAt = new DateTime(2026, 5, 15, 16, 38, 53, 426, DateTimeKind.Utc).AddTicks(9561)
+                            UpdatedAt = new DateTime(2026, 5, 15, 16, 27, 11, 170, DateTimeKind.Utc).AddTicks(6762)
                         },
                         new
                         {
@@ -316,7 +319,7 @@ namespace TicketsApp.Infrastructure.Migrations
                             Description = "Departamento de Finanzas",
                             IsActive = true,
                             Name = "Finanzas",
-                            UpdatedAt = new DateTime(2026, 5, 15, 16, 38, 53, 426, DateTimeKind.Utc).AddTicks(9569)
+                            UpdatedAt = new DateTime(2026, 5, 15, 16, 27, 11, 170, DateTimeKind.Utc).AddTicks(6767)
                         },
                         new
                         {
@@ -325,7 +328,7 @@ namespace TicketsApp.Infrastructure.Migrations
                             Description = "Solicitudes generales",
                             IsActive = true,
                             Name = "Generales",
-                            UpdatedAt = new DateTime(2026, 5, 15, 16, 38, 53, 426, DateTimeKind.Utc).AddTicks(9571)
+                            UpdatedAt = new DateTime(2026, 5, 15, 16, 27, 11, 170, DateTimeKind.Utc).AddTicks(6769)
                         });
                 });
 
@@ -586,16 +589,8 @@ namespace TicketsApp.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
